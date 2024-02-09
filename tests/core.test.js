@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { calculateDiscount, getCoupons } from '../src/core.js';
+import {
+  calculateDiscount,
+  getCoupons,
+  validateUserInput,
+} from '../src/core.js';
 
 describe('getCoupons', () => {
   it('should return an array of coupons', () => {
@@ -50,5 +54,40 @@ describe('calculateDiscount', () => {
 
   it('should handle invalid discount code', () => {
     expect(calculateDiscount(10, 'INVALID')).toBe(10);
+  });
+});
+
+describe('validateUserInput', () => {
+  it('should return success if given valid input', () => {
+    expect(validateUserInput('Juana', 20)).toMatch(/success/i);
+  });
+
+  it('should return an error if username is not a string', () => {
+    expect(validateUserInput(2, 20)).toMatch(/invalid/i);
+  });
+
+  it('should return an error if username is less then 3 characters', () => {
+    expect(validateUserInput('Ja', 20)).toMatch(/invalid/i);
+  });
+
+  it('should return an error if username is longer than 255 characters', () => {
+    expect(validateUserInput('J'.repeat(256), 20)).toMatch(/invalid/i);
+  });
+
+  it('should return an error if age is not a number', () => {
+    expect(validateUserInput('Juana', 'Juana')).toMatch(/invalid/i); //In the case of using TS, it wasn't be needed
+  });
+
+  it('should return an error if age is less than 18', () => {
+    expect(validateUserInput('Juana', 17)).toMatch(/invalid/i);
+  });
+
+  it('should return an error if age is greater than 100', () => {
+    expect(validateUserInput('Juana', 101)).toMatch(/invalid/i);
+  });
+
+  it('should return an error if both username and age are invalid', () => {
+    expect(validateUserInput('Ju', 101)).toMatch(/invalid username/i);
+    expect(validateUserInput('Ju', 101)).toMatch(/invalid age/i);
   });
 });

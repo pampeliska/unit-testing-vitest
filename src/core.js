@@ -56,6 +56,9 @@ export function isValidUsername(username) {
   const minLength = 5;
   const maxLength = 15;
 
+  if (!username) return false;
+  //if (username === null || username === undefined) return false;
+
   return username.length >= minLength && username.length <= maxLength;
 }
 

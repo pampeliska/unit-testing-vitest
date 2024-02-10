@@ -3,6 +3,7 @@ import {
   calculateDiscount,
   getCoupons,
   isPriceInRange,
+  isValidUsername,
   validateUserInput,
 } from '../src/core.js';
 
@@ -106,5 +107,33 @@ describe('isPriceInRange', () => {
 
   it('should return true when the price is within the range', () => {
     expect(isPriceInRange(50, 0, 100)).toBe(true);
+  });
+});
+
+describe('isValidUsername', () => {
+  //constraints
+  // const minlength = 5;
+  // const msxlength = 15;
+  it('should return false then the length of the username is outside the range', () => {
+    //'a'.repeat(minlength - 1)
+    expect(isValidUsername('Jane')).toBe(false);
+    //'a'.repeat(maxlength + 1)
+    expect(isValidUsername('J'.repeat(16))).toBe(false);
+  });
+
+  it('should return true then the length is equal to the min or to the max lenght', () => {
+    expect(isValidUsername('Juana')).toBe(true);
+    expect(isValidUsername('J'.repeat(15))).toBe(true);
+  });
+
+  it('should return true then the length is within the range', () => {
+    expect(isValidUsername('JuanaJana')).toBe(true);
+  });
+
+  it('should return false for invalid input types', () => {
+    expect(isValidUsername(null)).toBe(false);
+    expect(isValidUsername(undefined)).toBe(false);
+    expect(isValidUsername(9)).toBe(false);
+    expect(isValidUsername('')).toBe(false);
   });
 });

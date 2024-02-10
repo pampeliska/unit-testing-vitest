@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   calculateDiscount,
+  canDrive,
   getCoupons,
   isPriceInRange,
   isValidUsername,
@@ -135,5 +136,35 @@ describe('isValidUsername', () => {
     expect(isValidUsername(undefined)).toBe(false);
     expect(isValidUsername(9)).toBe(false);
     expect(isValidUsername('')).toBe(false);
+  });
+});
+
+describe('canDrive', () => {
+  it('should return error for invalid country code', () => {
+    expect(canDrive(20, 'FR')).toMatch(/invalid/i);
+  });
+
+  it('should return false for underage in the US', () => {
+    expect(canDrive(15, 'US')).toBe(false);
+  });
+
+  it('should return true for min age in the US', () => {
+    expect(canDrive(16, 'US')).toBe(true);
+  });
+
+  it('should return true for adult in the US', () => {
+    expect(canDrive(17, 'US')).toBe(true);
+  });
+
+  it('should return false for underage in the US', () => {
+    expect(canDrive(16, 'UK')).toBe(false);
+  });
+
+  it('should return true for min age in the US', () => {
+    expect(canDrive(17, 'UK')).toBe(true);
+  });
+
+  it('should return true for adult in the US', () => {
+    expect(canDrive(18, 'UK')).toBe(true);
   });
 });

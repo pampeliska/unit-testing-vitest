@@ -1,4 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
+import { getExchangeRate } from '../src/libs/currency';
+import { getPriceInCurrency } from '../src/mocking';
+
+//mocking a module
+vi.mock('../src/libs/currency'); //it's hoisted and executed as the first at the top
 
 describe('test suite', () => {
   it('test case', () => {
@@ -39,3 +44,16 @@ describe('test suite 2', () => {
     expect(result).toBe('ok');
   });
 });
+
+describe('getPriceInCurrency', () => {
+  it('should return price in target currency', () => {
+    //mocking module z libs mockujeme nahore
+    vi.mocked(getExchangeRate).mockReturnValue(1.5);
+
+    const price = getPriceInCurrency(10, 'CZK');
+
+    expect(price).toBe(15);
+  });
+});
+
+

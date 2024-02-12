@@ -8,7 +8,7 @@ import {
   isPriceInRange,
   isValidUsername,
   validateUserInput,
-} from '../src/core.js';
+} from '../src/core';
 
 describe('getCoupons', () => {
   it('should return an array of coupons', () => {

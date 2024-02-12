@@ -3,10 +3,12 @@ import { trackPageView } from '../src/libs/analytics';
 import { getExchangeRate } from '../src/libs/currency';
 import { sendEmail } from '../src/libs/email';
 import { charge } from '../src/libs/payment';
+import security from '../src/libs/security';
 import { getShippingQuote } from '../src/libs/shipping';
 import {
   getPriceInCurrency,
   getShippingInfo,
+  login,
   renderPage,
   signUp,
   submitOrder,
@@ -142,9 +144,21 @@ describe('signUp', () => {
   it('should send the welcome email if email is valid', async () => {
     const result = await signUp(email);
     expect(sendEmail).toHaveBeenCalled();
-    console.log(vi.mocked(sendEmail).mock.calls[0]);
+    // console.log(vi.mocked(sendEmail).mock.calls[0]);
     const args = vi.mocked(sendEmail).mock.calls[0];
     expect(args[0]).toBe(email);
     expect(args[1]).toMatch(/welcome/i);
+  });
+});
+
+describe('login', () => {
+  const email = 'name@domain.com';
+  it('should email the one-time login code', async () => {
+    const spy = vi.spyOn(security, 'generateCode');
+    await login(email);
+    //console.log(spy.mock.results[0]);
+    const securityCode = spy.mock.results[0].value.toString();
+    expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
+    //.mockReturnValue(12345);
   });
 });

@@ -150,6 +150,7 @@ describe('signUp', () => {
   });
 
   it('should send the welcome email if email is valid', async () => {
+    await signUp(email);
     expect(sendEmail).toHaveBeenCalledOnce();
     // console.log(vi.mocked(sendEmail).mock.calls[0]);
     const args = vi.mocked(sendEmail).mock.calls[0];

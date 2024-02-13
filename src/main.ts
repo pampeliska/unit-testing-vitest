@@ -1,6 +1,6 @@
 export function calculateDiscount(
   price: number,
-  discountCode: string,
+  discountCode: string
 ): number | string {
   if (price <= 0) {
     return 'Invalid price';

@@ -6,6 +6,7 @@ import { charge } from '../src/libs/payment';
 import security from '../src/libs/security';
 import { getShippingQuote } from '../src/libs/shipping';
 import {
+  getDiscount,
   getPriceInCurrency,
   getShippingInfo,
   isOnline,
@@ -185,5 +186,23 @@ describe('isOnline', () => {
 
     vi.setSystemTime(new Date('2024-01-01 19:59:00'));
     expect(isOnline()).toBe(true);
+  });
+});
+
+describe('getDiscount', () => {
+  it('should return 0 discount if it is not Chritmas day', () => {
+    vi.setSystemTime(new Date('2024-12-24 23:59'));
+    expect(getDiscount()).toBe(0);
+
+    vi.setSystemTime(new Date('2024-12-26 00:00'));
+    expect(getDiscount()).toBe(0);
+  });
+
+  it('should return 0.2 discount on Chritmas day', () => {
+    vi.setSystemTime(new Date('2024-12-25 00:00'));
+    expect(getDiscount()).toBe(0.2);
+
+    vi.setSystemTime(new Date('2024-12-25 23:59'));
+    expect(getDiscount()).toBe(0.2);
   });
 });

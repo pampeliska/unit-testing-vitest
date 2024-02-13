@@ -62,7 +62,7 @@ export function isOnline() {
 
 // Exercise
 export function getDiscount() {
-  const today = new Date();
+  const today = new Date(); // Dec 25
   const isChristmasDay = today.getMonth() === 11 && today.getDate() === 25;
   return isChristmasDay ? 0.2 : 0;
 }

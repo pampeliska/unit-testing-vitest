@@ -8,6 +8,7 @@ import { getShippingQuote } from '../src/libs/shipping';
 import {
   getPriceInCurrency,
   getShippingInfo,
+  isOnline,
   login,
   renderPage,
   signUp,
@@ -166,5 +167,23 @@ describe('login', () => {
     const securityCode = spy.mock.results[0].value.toString();
     expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
     //.mockReturnValue(12345);
+  });
+});
+
+describe('isOnline', () => {
+  it('should return false if current hour is outside opening hours', () => {
+    vi.setSystemTime(new Date('2024-01-01 07:59:00'));
+    expect(isOnline()).toBe(false);
+
+    vi.setSystemTime(new Date('2024-01-01 21:01:00'));
+    expect(isOnline()).toBe(false);
+  });
+
+  it('should return true if current hour is within opening hours', () => {
+    vi.setSystemTime(new Date('2024-01-01 08:00:00'));
+    expect(isOnline()).toBe(true);
+
+    vi.setSystemTime(new Date('2024-01-01 19:59:00'));
+    expect(isOnline()).toBe(true);
   });
 });

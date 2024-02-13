@@ -7,15 +7,15 @@ import {
   getCoupons,
   isPriceInRange,
   isValidUsername,
-  validateUserInput,
+  validateUserInput
 } from '../src/core';
 
 describe('getCoupons', () => {
   it('should return an array of coupons', () => {
     const coupons = getCoupons();
-    //if it is an array
-    expect(Array.isArray(coupons)).toBe(true); //just for JS
-    //expect(coupons).toHaveLength(2);
+    // if it is an array
+    expect(Array.isArray(coupons)).toBe(true); // just for JS
+    // expect(coupons).toHaveLength(2);
     expect(coupons.length).toBeGreaterThan(0);
   });
 
@@ -23,8 +23,8 @@ describe('getCoupons', () => {
     const coupons = getCoupons();
     coupons.forEach((coupon) => {
       expect(coupon).toHaveProperty('code');
-      expect(typeof coupon.code).toBe('string'); //just for JS
-      expect(coupon.code).toBeTruthy(); //not empty string
+      expect(typeof coupon.code).toBe('string'); // just for JS
+      expect(coupon.code).toBeTruthy(); // not empty string
     });
   });
 
@@ -32,7 +32,7 @@ describe('getCoupons', () => {
     const coupons = getCoupons();
     coupons.forEach((coupon) => {
       expect(coupon).toHaveProperty('discount');
-      expect(typeof coupon.discount).toBe('number'); //just for JS
+      expect(typeof coupon.discount).toBe('number'); // just for JS
       expect(coupon.discount).toBeGreaterThanOrEqual(0);
       expect(coupon.discount).toBeLessThanOrEqual(1);
     });
@@ -80,7 +80,7 @@ describe('validateUserInput', () => {
   });
 
   it('should return an error if age is not a number', () => {
-    expect(validateUserInput('Juana', 'Juana')).toMatch(/invalid/i); //In the case of using TS, it wasn't be needed
+    expect(validateUserInput('Juana', 'Juana')).toMatch(/invalid/i); // In the case of using TS, it wasn't be needed
   });
 
   it('should return an error if age is less than 18', () => {
@@ -103,20 +103,20 @@ describe('isPriceInRange', () => {
     { scenario: 'price = min', price: 0, result: true },
     { scenario: 'min < price < max', price: 50, result: true },
     { scenario: 'price = max', price: 100, result: true },
-    { scenario: 'price > max', price: 101, result: false },
+    { scenario: 'price > max', price: 101, result: false }
   ])('should return $result when $scenario', ({ price, result }) => {
     expect(isPriceInRange(price, 0, 100)).toBe(result);
   });
 });
 
 describe('isValidUsername', () => {
-  //constraints
+  // constraints
   // const minlength = 5;
   // const msxlength = 15;
   it('should return false then the length of the username is outside the range', () => {
-    //'a'.repeat(minlength - 1)
+    // 'a'.repeat(minlength - 1)
     expect(isValidUsername('Jane')).toBe(false);
-    //'a'.repeat(maxlength + 1)
+    // 'a'.repeat(maxlength + 1)
     expect(isValidUsername('J'.repeat(16))).toBe(false);
   });
 
@@ -145,7 +145,7 @@ describe('canDrive', () => {
     { age: 17, country: 'US', result: true },
     { age: 16, country: 'UK', result: false },
     { age: 17, country: 'UK', result: true },
-    { age: 18, country: 'UK', result: true },
+    { age: 18, country: 'UK', result: true }
   ])('should return $result for $age, $country', ({ age, country, result }) => {
     expect(canDrive(age, country)).toBe(result);
   });
@@ -170,7 +170,7 @@ describe('fetchData', () => {
 
   it('should return a promise that will resolve an array of numbers', async () => {
     try {
-      const result = await fetchData();
+      await fetchData();
     } catch (error) {
       expect(error).toHaveProperty('reason');
       expect(error.reason).toMatch(/fail/i);

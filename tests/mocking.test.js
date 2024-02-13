@@ -13,39 +13,39 @@ import {
   login,
   renderPage,
   signUp,
-  submitOrder,
+  submitOrder
 } from '../src/mocking';
 
-//mocking a module
-vi.mock('../src/libs/currency'); //it's hoisted and executed as the first at the top
+// mocking a module
+vi.mock('../src/libs/currency'); // it's hoisted and executed as the first at the top
 vi.mock('../src/libs/shipping');
 vi.mock('../src/libs/analytics');
 vi.mock('../src/libs/payment');
 vi.mock('../src/libs/email', async (importOriginal) => {
-  //patrial mocking, we are mocking only sendEmail function
+  // patrial mocking, we are mocking only sendEmail function
   const originalModule = await importOriginal();
   return {
     ...originalModule,
-    sendEmail: vi.fn(),
+    sendEmail: vi.fn()
   };
 });
 
 describe('test suite', () => {
   it('test case', () => {
     const greet = vi.fn();
-    greet.mockReturnValue('Hello'); //mocking the function returning value
+    greet.mockReturnValue('Hello'); // mocking the function returning value
     const result = greet();
     console.log(result);
 
-    greet.mockResolvedValue('Hello'); //mocking the function returning promise
+    greet.mockResolvedValue('Hello'); // mocking the function returning promise
     greet().then((result) => {
       console.log(result);
 
-      greet.mockImplementation((name) => 'Hello ' + name); //to add logic or implementation to mock function
+      greet.mockImplementation((name) => 'Hello ' + name); // to add logic or implementation to mock function
       //   const result = greet('Jane');
       console.log(greet('Jane'));
 
-      //matchers
+      // matchers
       //   expect(greet).toHaveBeenCalled(); //to check if the function has been called
       //   expect(greet).toHaveBeenCalledWith('Jane'); //to check if the function has been called with this argument
       //   expect(greet).toHaveBeenCalledOnce();
@@ -72,7 +72,7 @@ describe('test suite 2', () => {
 
 describe('getPriceInCurrency', () => {
   it('should return price in target currency', () => {
-    //mocking module z libs mockujeme nahore
+    // mocking module z libs mockujeme nahore
     vi.mocked(getExchangeRate).mockReturnValue(1.5);
 
     const price = getPriceInCurrency(10, 'CZK');
@@ -122,7 +122,7 @@ describe('submitOrder', () => {
   it('should return success when payment is successful', async () => {
     vi.mocked(charge).mockResolvedValue({ status: 'success' });
     const result = await submitOrder(order, creditCard);
-    expect(result).toEqual({ success: true }); //equal because we are comparing objects
+    expect(result).toEqual({ success: true }); // equal because we are comparing objects
   });
   it('should return false when payment is failed', async () => {
     vi.mocked(charge).mockResolvedValue({ status: 'failed' });
@@ -150,7 +150,6 @@ describe('signUp', () => {
   });
 
   it('should send the welcome email if email is valid', async () => {
-    const result = await signUp(email);
     expect(sendEmail).toHaveBeenCalledOnce();
     // console.log(vi.mocked(sendEmail).mock.calls[0]);
     const args = vi.mocked(sendEmail).mock.calls[0];
@@ -164,10 +163,10 @@ describe('login', () => {
   it('should email the one-time login code', async () => {
     const spy = vi.spyOn(security, 'generateCode');
     await login(email);
-    //console.log(spy.mock.results[0]);
+    // console.log(spy.mock.results[0]);
     const securityCode = spy.mock.results[0].value.toString();
     expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
-    //.mockReturnValue(12345);
+    // .mockReturnValue(12345);
   });
 });
 
